@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brad Guerrero | Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel (to compile JSX in browser) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Custom Font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-white text-slate-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Icons ---
+        const IconWrapper = ({ children, className }) => (
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className={className}
+            >
+                {children}
+            </svg>
+        );
+
+        const Github = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36.5-8 0C6 2 5 2 4 4.5c-.31 1.15-.31 2.35 0 3.5A5.409 5.409 0 0 0 2 11.5c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                <path d="M9 18c-4.51 2-5-2-7-2" />
+            </IconWrapper>
+        );
+
+        const Linkedin = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect width="4" height="12" x="2" y="9" />
+                <circle cx="4" cy="4" r="2" />
+            </IconWrapper>
+        );
+
+        const Mail = ({ className }) => (
+            <IconWrapper className={className}>
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </IconWrapper>
+        );
+
+        const ArrowUpRight = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="M7 7h10v10" />
+                <path d="M7 17 17 7" />
+            </IconWrapper>
+        );
+
+        const Code2 = ({ className }) => (
+            <IconWrapper className={className}>
+                <path d="m18 16 4-4-4-4" />
+                <path d="m6 8-4 4 4 4" />
+                <path d="m14.5 4-5 16" />
+            </IconWrapper>
+        );
+
+        const Terminal = ({ className }) => (
+            <IconWrapper className={className}>
+                <polyline points="4 17 10 11 4 5" />
+                <line x1="12" x2="20" y1="19" y2="19" />
+            </IconWrapper>
+        );
+
+        const Cpu = ({ className }) => (
+            <IconWrapper className={className}>
+                <rect width="16" height="16" x="4" y="4" rx="2" />
+                <rect width="6" height="6" x="9" y="9" rx="1" />
+                <path d="M15 2v2" /><path d="M15 20v2" /><path d="M2 15h2" /><path d="M2 9h2" /><path d="M20 15h2" /><path d="M20 9h2" /><path d="M9 2v2" /><path d="M9 20v2" />
+            </IconWrapper>
+        );
+
+        const Globe = ({ className }) => (
+            <IconWrapper className={className}>
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" x2="22" y1="12" y2="12" />
+                <path d="a12 12 0 0 1 0 10 4 4 0 0 0 0-10 12 12 0 0 1 0 10Z" />
+            </IconWrapper>
+        );
+
+        // --- Data (customized for Brad) ---
+
+        const PROJECTS = [
+            {
+                title: "Tab Buddy – iOS Guitar Tablature Reader",
+                description: "A polished iOS app for browsing, reading, and playing guitar tabs. Built as a long-running side project blending music and UX design.",
+                tags: ["iOS", "Guitar", "Mobile"],
+                link: "https://github.com/bradsta", // TODO: replace with Tab Buddy repo URL
+                year: "2025"
+            },
+            {
+                title: "FER – Narrative-Rich Card Game",
+                description: "Single-player narrative card game built in Unity, combining visual novel-style storytelling with card-based combat systems.",
+                tags: ["Unity", "C#", "Game Design"],
+                link: "https://github.com/bradsta", // TODO: replace with FER repo URL
+                year: "2025"
+            },
+            {
+                title: "Game Dial – Game Backlog Tracker",
+                description: "iOS app for tracking game backlogs, capturing what you own, what you’ve finished, and what’s next in the queue.",
+                tags: ["iOS", "Productivity"],
+                link: "https://github.com/bradsta", // TODO: replace with Game Dial repo URL
+                year: "2022"
+            },
+            {
+                title: "Mangos – AI Manga Reader",
+                description: "Experimental manga reader exploring AI-assisted reading flows and adaptive layouts for long-form visual content.",
+                tags: ["Mobile", "AI"],
+                link: "https://github.com/bradsta", // TODO: replace with Mangos repo URL
+                year: "2019"
+            },
+            {
+                title: "Hipster Bird",
+                description: "Android arcade game and one of my earliest shipped titles. Focused on tight game feel, responsive controls, and quick session play.",
+                tags: ["Android", "Game Dev"],
+                link: "https://github.com/bradsta", // TODO: replace with Hipster Bird repo URL
+                year: "2014"
+            },
+            {
+                title: "Spy Maze",
+                description: "Android puzzle game built early in my career, featuring stealth mechanics, maze navigation, and fast iteration on level design.",
+                tags: ["Android", "Puzzle"],
+                link: "https://github.com/bradsta", // TODO: replace with Spy Maze repo URL
+                year: "2012"
+            }
+        ];
+
+        const EXPERIENCE = [
+            {
+                company: "Amazon Game Studios",
+                role: "Software Development Engineer III (L6)",
+                period: "Jul 2023 — Present",
+                description: "Architecting core item and data systems for an unreleased Lord of the Rings MMO and leading technical direction for New World’s progression team (items, loot, in-game economy). Designed a custom serializer pattern adopted by multiple gameplay teams."
+            },
+            {
+                company: "Amazon Game Studios",
+                role: "Software Development Engineer II",
+                period: "Oct 2020 — Jul 2023",
+                description: "Resolved mission-critical live issues such as item duplication and economy exploits for New World’s ~1MM CCU launch. Built C++ tooling for loot visualization and hardened AWS-backed gameplay systems (guilds, trading post, trades)."
+            },
+            {
+                company: "Amazon Game Studios",
+                role: "Software Development Engineer I",
+                period: "Jul 2018 — Oct 2020",
+                description: "Gameplay systems engineer owning features like instanced loot, item perks, combat damage, and status effects across large-scale MMO content."
+            },
+            {
+                company: "Amazon Game Studios",
+                role: "Software Development Engineer Intern",
+                period: "Jun 2017 — Sep 2017",
+                description: "Implemented and optimized a spectator camera system for competitive play, including an auto-spectator mode that intelligently selects viewpoints."
+            }
+        ];
+
+        // --- Components ---
+
+        const ProjectCard = ({ project }) => (
+            <div className="group relative flex flex-col gap-4 p-6 -mx-6 rounded-2xl hover:bg-slate-50 transition-colors duration-300">
+                <div className="flex justify-between items-start">
+                    <h3 className="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+                        {project.title}
+                    </h3>
+                    <span className="text-xs font-mono text-slate-400">{project.year}</span>
+                </div>
+                <p className="text-slate-600 leading-relaxed text-sm">
+                    {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mt-auto">
+                    {project.tags.map((tag) => (
+                        <span key={tag} className="text-xs font-medium px-2 py-1 bg-slate-100 text-slate-600 rounded-full">
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+                {project.link && (
+                    <a 
+                        href={project.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="absolute inset-0 z-10 flex items-end justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                        <ArrowUpRight className="w-5 h-5 text-blue-600" />
+                    </a>
+                )}
+            </div>
+        );
+
+        const ExperienceItem = ({ exp }) => (
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 py-8 border-b border-slate-100 last:border-0">
+                <div className="sm:w-40 shrink-0">
+                    <span className="text-xs font-mono text-slate-400 block pt-1">{exp.period}</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                    <h3 className="font-medium text-slate-900">{exp.company}</h3>
+                    <div className="text-sm text-slate-500 font-medium">{exp.role}</div>
+                    <p className="text-sm text-slate-600 leading-relaxed mt-2 max-w-lg">
+                        {exp.description}
+                    </p>
+                </div>
+            </div>
+        );
+
+        const Section = ({ title, children, id, className = "" }) => (
+            <section id={id} className={`py-24 ${className}`}>
+                <div className="max-w-4xl mx-auto px-6">
+                    {title && (
+                        <h2 className="text-sm font-mono text-slate-400 uppercase tracking-widest mb-12">
+                            {title}
+                        </h2>
+                    )}
+                    {children}
+                </div>
+            </section>
+        );
+
+        // --- Main Application ---
+
+        const App = () => {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 50);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const scrollTo = (id) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
+                    
+                    {/* Navigation */}
+                    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-md border-b border-slate-100 py-4' : 'bg-transparent py-6'}`}>
+                        <div className="max-w-4xl mx-auto px-6 flex justify-between items-center">
+                            <button
+                                className="font-bold text-lg tracking-tight cursor-pointer"
+                                onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}
+                            >
+                                Brad Guerrero
+                            </button>
+                            <div className="flex gap-6 items-center">
+                                <button onClick={() => scrollTo('work')} className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">Projects</button>
+                                <button onClick={() => scrollTo('about')} className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">Experience</button>
+                                <button onClick={() => scrollTo('contact')} className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">Contact</button>
+                                <a 
+                                    href="Brad_Guerrero_Resume_2025.pdf" 
+                                    className="hidden sm:inline-flex text-xs font-mono px-3 py-1.5 rounded-full border border-slate-200 text-slate-600 hover:border-slate-900 hover:text-slate-900 transition-colors"
+                                >
+                                    Resume
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* Hero */}
+                    <main className="pt-32 pb-16 sm:pt-40 sm:pb-24">
+                        <div className="max-w-4xl mx-auto px-6 flex flex-col md:flex-row gap-10 items-center md:items-start">
+                            {/* Profile photo */}
+                            <div className="shrink-0">
+                                <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-slate-100 shadow-md bg-slate-100">
+                                    <img 
+                                        src="me.jpeg" 
+                                        alt="Brad Guerrero" 
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Text */}
+                            <div className="flex-1">
+                                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900 mb-4 leading-[1.05]">
+                                    Gameplay & systems engineer
+                                    <span className="block text-slate-400 mt-1">
+                                        building large-scale online worlds.
+                                    </span>
+                                </h1>
+                                <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed mb-6">
+                                    I’m Brad, a Software Development Engineer III at Amazon Game Studios in Irvine, CA. 
+                                    I’ve spent the last several years architecting itemization, progression, and data systems 
+                                    for large-scale MMOs like <span className="font-medium">New World</span> and an unreleased 
+                                    Lord of the Rings MMO, with a focus on reliability, performance, and great player experiences.
+                                </p>
+                                <div className="flex flex-wrap items-center gap-4 mb-4">
+                                    <a 
+                                        href="mailto:bradeguerrero@gmail.com"
+                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-full text-sm font-medium hover:bg-slate-800 transition-colors"
+                                    >
+                                        <Mail className="w-4 h-4" />
+                                        Email me
+                                    </a>
+                                    <a 
+                                        href="https://github.com/bradsta"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 text-slate-900 rounded-full text-sm font-medium hover:bg-slate-200 transition-colors"
+                                    >
+                                        <Github className="w-4 h-4" />
+                                        GitHub
+                                    </a>
+                                    <a 
+                                        href="https://linkedin.com/in/bradguerrero"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 text-slate-900 rounded-full text-sm font-medium hover:bg-slate-200 transition-colors"
+                                    >
+                                        <Linkedin className="w-4 h-4" />
+                                        LinkedIn
+                                    </a>
+                                </div>
+                                <p className="text-xs text-slate-400 font-mono">
+                                    C/C++ · C# · Lua · Gameplay Systems · Distributed Systems · AWS
+                                </p>
+                            </div>
+                        </div>
+                    </main>
+
+                    {/* Projects Grid */}
+                    <Section id="work" title="Projects">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+                            {PROJECTS.map((project, idx) => (
+                                <ProjectCard key={idx} project={project} />
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* Experience */}
+                    <Section id="about" title="Experience">
+                        <div className="flex flex-col">
+                            {EXPERIENCE.map((exp, idx) => (
+                                <ExperienceItem key={idx} exp={exp} />
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* Skills / Tech Stack */}
+                    <Section title="Tech & Focus Areas">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+                            {/* Gameplay / Engines */}
+                            <div className="flex flex-col gap-3">
+                                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 text-slate-900 p-1.5">
+                                    <Code2 className="w-full h-full" />
+                                </div>
+                                <h4 className="font-medium text-slate-900">Gameplay</h4>
+                                <ul className="text-sm text-slate-500 space-y-1">
+                                    <li>Unreal Engine</li>
+                                    <li>Unity</li>
+                                    <li>Proprietary Engines</li>
+                                </ul>
+                            </div>
+                            {/* Systems / Backend */}
+                            <div className="flex flex-col gap-3">
+                                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 text-slate-900 p-1.5">
+                                    <Terminal className="w-full h-full" />
+                                </div>
+                                <h4 className="font-medium text-slate-900">Systems</h4>
+                                <ul className="text-sm text-slate-500 space-y-1">
+                                    <li>Distributed Systems</li>
+                                    <li>Transactions & Persistence</li>
+                                    <li>Data Modeling</li>
+                                </ul>
+                            </div>
+                            {/* Performance / Infra */}
+                            <div className="flex flex-col gap-3">
+                                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 text-slate-900 p-1.5">
+                                    <Cpu className="w-full h-full" />
+                                </div>
+                                <h4 className="font-medium text-slate-900">Performance</h4>
+                                <ul className="text-sm text-slate-500 space-y-1">
+                                    <li>Optimization</li>
+                                    <li>Memory Management</li>
+                                    <li>Debug Tooling</li>
+                                </ul>
+                            </div>
+                            {/* Platforms / Cloud */}
+                            <div className="flex flex-col gap-3">
+                                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-50 text-slate-900 p-1.5">
+                                    <Globe className="w-full h-full" />
+                                </div>
+                                <h4 className="font-medium text-slate-900">Platforms</h4>
+                                <ul className="text-sm text-slate-500 space-y-1">
+                                    <li>AWS</li>
+                                    <li>Console & PC</li>
+                                    <li>iOS & Android</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </Section>
+
+                    {/* Contact */}
+                    <Section id="contact" className="pb-32">
+                        <div className="bg-slate-50 rounded-3xl p-8 sm:p-12 text-center">
+                            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">
+                                Let’s build something.
+                            </h2>
+                            <p className="text-slate-600 mb-8 max-w-lg mx-auto">
+                                I’m always interested in talking about gameplay systems, tools, and ambitious online games.
+                                If you’d like to collaborate or just chat about an idea, feel free to reach out.
+                            </p>
+                            <a 
+                                href="mailto:bradeguerrero@gmail.com" 
+                                className="inline-flex items-center gap-2 text-xl font-medium text-blue-600 hover:text-blue-700 transition-colors border-b-2 border-blue-600/20 hover:border-blue-600 pb-1"
+                            >
+                                bradeguerrero@gmail.com
+                                <ArrowUpRight className="w-5 h-5" />
+                            </a>
+                        </div>
+                    </Section>
+
+                    {/* Footer */}
+                    <footer className="border-t border-slate-100 py-10">
+                        <div className="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-6">
+                            <span className="text-slate-400 text-sm">
+                                © {new Date().getFullYear()} Brad Guerrero. All rights reserved.
+                            </span>
+                            <div className="flex gap-5">
+                                <a 
+                                    href="https://github.com/bradsta" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-slate-400 hover:text-slate-900 transition-colors"
+                                >
+                                    <Github className="w-5 h-5" />
+                                </a>
+                                <a 
+                                    href="https://linkedin.com/in/bradguerrero" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-slate-400 hover:text-slate-900 transition-colors"
+                                >
+                                    <Linkedin className="w-5 h-5" />
+                                </a>
+                                <a 
+                                    href="mailto:bradeguerrero@gmail.com" 
+                                    className="text-slate-400 hover:text-slate-900 transition-colors"
+                                >
+                                    <Mail className="w-5 h-5" />
+                                </a>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
