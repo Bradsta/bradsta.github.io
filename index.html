@@ -107,73 +107,74 @@
 
         const PROJECTS = [
             {
-                title: "Tab Buddy – iOS Guitar Tablature Reader",
+                title: "Tab Buddy – Guitar Tablature Reader",
                 description: "A polished iOS app for browsing, reading, and playing guitar tabs. Built as a long-running side project blending music and UX design.",
-                tags: ["iOS", "Guitar", "Mobile"],
-                link: "https://github.com/bradsta", // TODO: replace with Tab Buddy repo URL
-                year: "2025"
-            },
-            {
-                title: "FER – Narrative-Rich Card Game",
-                description: "Single-player narrative card game built in Unity, combining visual novel-style storytelling with card-based combat systems.",
-                tags: ["Unity", "C#", "Game Design"],
-                link: "https://github.com/bradsta", // TODO: replace with FER repo URL
-                year: "2025"
+                tags: ["iOS", "SwiftUI", "Guitar"],
+                link: "https://github.com/Bradsta/tab-buddy",
+                year: "2025",
+                icon: "data/tab-buddy.png"
             },
             {
                 title: "Game Dial – Game Backlog Tracker",
                 description: "iOS app for tracking game backlogs, capturing what you own, what you’ve finished, and what’s next in the queue.",
-                tags: ["iOS", "Productivity"],
-                link: "https://github.com/bradsta", // TODO: replace with Game Dial repo URL
-                year: "2022"
+                tags: ["iOS", "SwiftUI"],
+                link: "https://github.com/Bradsta/game-dial",
+                year: "2022",
+                icon: "data/game-dial.png"
             },
             {
                 title: "Mangos – AI Manga Reader",
                 description: "Experimental manga reader exploring AI-assisted reading flows and adaptive layouts for long-form visual content.",
-                tags: ["Mobile", "AI"],
-                link: "https://github.com/bradsta", // TODO: replace with Mangos repo URL
-                year: "2019"
+                tags: ["iOS", "UIKit", "AI", "ML"],
+                link: "https://github.com/Bradsta/mangos",
+                year: "2019",
+                icon: "data/mangos.png"
+            },
+            {
+                title: "Newton's Heist",
+                description: "Gravity manipulation puzzle platformer with colorful tron inspired aesthetics. IEEE Gamesig 2017 Finalist built by a small student team.",
+                tags: ["Unreal Engine", "C++", "Platformer"],
+                link: "https://github.com/Bradsta/newtons-heist",
+                year: "2025",
+                icon: "data/newtons-heist.png"
             },
             {
                 title: "Hipster Bird",
                 description: "Android arcade game and one of my earliest shipped titles. Focused on tight game feel, responsive controls, and quick session play.",
-                tags: ["Android", "Game Dev"],
-                link: "https://github.com/bradsta", // TODO: replace with Hipster Bird repo URL
-                year: "2014"
+                tags: ["Android", "Java", "Arcade"],
+                link: "https://github.com/Bradsta/hipster-bird",
+                year: "2014",
+                icon: "data/hipster-bird.png"
             },
             {
                 title: "Spy Maze",
                 description: "Android puzzle game built early in my career, featuring stealth mechanics, maze navigation, and fast iteration on level design.",
-                tags: ["Android", "Puzzle"],
-                link: "https://github.com/bradsta", // TODO: replace with Spy Maze repo URL
-                year: "2012"
+                tags: ["Android", "Java", "Stealth"],
+                link: "https://github.com/Bradsta/spy-maze",
+                year: "2012",
+                icon: "data/spy-maze.png"
             }
         ];
 
         const EXPERIENCE = [
             {
                 company: "Amazon Game Studios",
-                role: "Software Development Engineer III (L6)",
-                period: "Jul 2023 — Present",
-                description: "Architecting core item and data systems for an unreleased Lord of the Rings MMO and leading technical direction for New World’s progression team (items, loot, in-game economy). Designed a custom serializer pattern adopted by multiple gameplay teams."
+                role: "Senior Gameplay Engineer",
+                period: "Jun 2017 — Oct 2025",
+                subtext: "Intern → SDE I → SDE II → SDE III (L6) · Gameplay & Systems",
+                description: "Senior (L6) engineer leading gameplay, systems, and service-layer development across New World and an unreleased Lord of the Rings MMO. Architected large-scale data and progression systems, resolved high-severity production issues across AWS-integrated services, and built internal tools and pipelines adopted across multiple teams."
             },
             {
-                company: "Amazon Game Studios",
-                role: "Software Development Engineer II",
-                period: "Oct 2020 — Jul 2023",
-                description: "Resolved mission-critical live issues such as item duplication and economy exploits for New World’s ~1MM CCU launch. Built C++ tooling for loot visualization and hardened AWS-backed gameplay systems (guilds, trading post, trades)."
+                company: "Freelance Software Engineer",
+                role: "Full-stack Mobile & Backend Developer",
+                period: "2012 — 2017",
+                description: "Designed and shipped multiple independent products, including a cross-platform marketplace app similar to OfferUp (Android/iOS) with a custom backend, two pure-Java Android games (Hipster Bird, Spy Maze), and a dictionary application (MyDict). Owned architecture, implementation, and release across client and server."
             },
             {
-                company: "Amazon Game Studios",
-                role: "Software Development Engineer I",
-                period: "Jul 2018 — Oct 2020",
-                description: "Gameplay systems engineer owning features like instanced loot, item perks, combat damage, and status effects across large-scale MMO content."
-            },
-            {
-                company: "Amazon Game Studios",
-                role: "Software Development Engineer Intern",
-                period: "Jun 2017 — Sep 2017",
-                description: "Implemented and optimized a spectator camera system for competitive play, including an auto-spectator mode that intelligently selects viewpoints."
+                company: "Impulse Software",
+                role: "Gameplay Automation Engineer (Contract)",
+                period: "2009 — 2012",
+                description: "Built advanced RuneScape automation clients used by tens of thousands of customers, generating hundreds of thousands of dollars in revenue for the company on a commission-based model. Implemented pathfinding (A*), behavior trees, and robust automation systems focused on reliability and anti-detection."
             }
         ];
 
@@ -181,13 +182,32 @@
 
         const ProjectCard = ({ project }) => (
             <div className="group relative flex flex-col gap-4 p-6 -mx-6 rounded-2xl hover:bg-slate-50 transition-colors duration-300">
-                <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
-                        {project.title}
-                    </h3>
-                    <span className="text-xs font-mono text-slate-400">{project.year}</span>
+                <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-2xl bg-slate-100 flex items-center justify-center overflow-hidden">
+                            {project.icon ? (
+                                <img
+                                    src={project.icon}
+                                    alt={project.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <span className="select-none text-lg">
+                                    {project.title.charAt(0)}
+                                </span>
+                            )}
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
+                                {project.title}
+                            </h3>
+                        </div>
+                    </div>
+                    <span className="text-xs font-mono text-slate-400 mt-1">
+                        {project.year}
+                    </span>
                 </div>
-                <p className="text-slate-600 leading-relaxed text-sm">
+                <p className="text-slate-600 leading-relaxed text-sm mt-1">
                     {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2 mt-auto">
@@ -218,6 +238,9 @@
                 <div className="flex flex-col gap-2">
                     <h3 className="font-medium text-slate-900">{exp.company}</h3>
                     <div className="text-sm text-slate-500 font-medium">{exp.role}</div>
+                    {exp.subtext && (
+                        <div className="text-xs text-slate-400">{exp.subtext}</div>
+                    )}
                     <p className="text-sm text-slate-600 leading-relaxed mt-2 max-w-lg">
                         {exp.description}
                     </p>
@@ -226,7 +249,7 @@
         );
 
         const Section = ({ title, children, id, className = "" }) => (
-            <section id={id} className={`py-24 ${className}`}>
+            <section id={id} className={`py-16 ${className}`}>
                 <div className="max-w-4xl mx-auto px-6">
                     {title && (
                         <h2 className="text-sm font-mono text-slate-400 uppercase tracking-widest mb-12">
@@ -275,7 +298,7 @@
                                 <button onClick={() => scrollTo('about')} className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">Experience</button>
                                 <button onClick={() => scrollTo('contact')} className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">Contact</button>
                                 <a 
-                                    href="Brad_Guerrero_Resume_2025.pdf" 
+                                    href="data/resume.pdf" 
                                     className="hidden sm:inline-flex text-xs font-mono px-3 py-1.5 rounded-full border border-slate-200 text-slate-600 hover:border-slate-900 hover:text-slate-900 transition-colors"
                                 >
                                     Resume
@@ -291,7 +314,7 @@
                             <div className="shrink-0">
                                 <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-slate-100 shadow-md bg-slate-100">
                                     <img 
-                                        src="me.jpeg" 
+                                        src="data/me.jpeg" 
                                         alt="Brad Guerrero" 
                                         className="w-full h-full object-cover"
                                     />
@@ -303,14 +326,11 @@
                                 <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900 mb-4 leading-[1.05]">
                                     Gameplay & systems engineer
                                     <span className="block text-slate-400 mt-1">
-                                        building large-scale online worlds.
+                                        building large-scale systems, online experiences, and developer tools.
                                     </span>
                                 </h1>
                                 <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed mb-6">
-                                    I’m Brad, a Software Development Engineer III at Amazon Game Studios in Irvine, CA. 
-                                    I’ve spent the last several years architecting itemization, progression, and data systems 
-                                    for large-scale MMOs like <span className="font-medium">New World</span> and an unreleased 
-                                    Lord of the Rings MMO, with a focus on reliability, performance, and great player experiences.
+                                    I’m Brad, a systems-oriented software engineer based in Southern California, previously a Senior (L6) engineer at Amazon Game Studios. I’ve spent the last several years architecting large-scale data, progression, and service systems for titles like <span className="font-medium">New World</span> and an unreleased Lord of the Rings MMO, and I also enjoy building mobile apps, tools, and experimental indie projects. My work spans gameplay engineering, backend services, real-time simulation, and cross-team technical leadership.
                                 </p>
                                 <div className="flex flex-wrap items-center gap-4 mb-4">
                                     <a 
@@ -346,20 +366,20 @@
                         </div>
                     </main>
 
-                    {/* Projects Grid */}
-                    <Section id="work" title="Projects">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-                            {PROJECTS.map((project, idx) => (
-                                <ProjectCard key={idx} project={project} />
-                            ))}
-                        </div>
-                    </Section>
-
                     {/* Experience */}
                     <Section id="about" title="Experience">
                         <div className="flex flex-col">
                             {EXPERIENCE.map((exp, idx) => (
                                 <ExperienceItem key={idx} exp={exp} />
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* Projects Grid */}
+                    <Section id="work" title="Projects">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+                            {PROJECTS.map((project, idx) => (
+                                <ProjectCard key={idx} project={project} />
                             ))}
                         </div>
                     </Section>
